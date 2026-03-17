@@ -23,8 +23,9 @@ import {
   ChevronRight,
   ArrowUpRight,
   Monitor,
-  Zap } from
-"lucide-react";
+  Zap,
+  Fingerprint
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -87,7 +88,18 @@ export default function ResumePage() {
               variant="outline"
               className="rounded-full border-white/10 bg-white/5 hover:bg-white hover:text-black transition-all group px-6 h-11"
               onClick={() => {
-                window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "tel:9175188539" } }, "*");
+                try {
+                  // Try iframe-based navigation first (for embedded contexts like Orchids)
+                  if (window !== window.parent) {
+                    window.parent.postMessage({ type: "OPEN_EXTERNAL_URL", data: { url: "tel:9175188539" } }, "*");
+                  } else {
+                    // Standalone: initiate phone call directly
+                    window.location.href = "tel:+919175188539";
+                  }
+                } catch {
+                  // Fallback: scroll to the contact section
+                  document.getElementById('education')?.scrollIntoView({ behavior: 'smooth' });
+                }
               }}>
 
               <div className="flex items-center gap-2 font-bold uppercase tracking-tighter text-sm">
@@ -98,15 +110,15 @@ export default function ResumePage() {
         </div>
       </nav>
 
-      <main className="relative z-10 pt-40 pb-32 !w-full !h-[5452px]">
+      <main className="relative z-10 pb-32 w-full">
         {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-6 mb-60">
+        <section className="max-w-7xl mx-auto px-6 mb-60 min-h-[calc(100vh-82px)] flex items-center justify-center">
           <motion.div
             style={{ scale: heroScale, opacity: heroOpacity, filter: `blur(${heroBlur}px)` }}
             initial="initial"
             animate="animate"
             variants={stagger}
-            className="flex flex-col items-center text-center gap-10">
+            className="flex flex-col items-center text-center gap-10 w-full py-20">
 
             <motion.div variants={fadeInUp} className="relative">
               <div className="absolute -inset-4 bg-blue-500/20 blur-2xl rounded-full animate-pulse opacity-50" />
@@ -120,7 +132,7 @@ export default function ResumePage() {
 
             <motion.h1
               variants={fadeInUp}
-              className="text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-heading font-black tracking-tighter leading-[0.85] text-white italic uppercase mix-blend-difference !w-[782px] !h-[218px]">
+              className="text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-heading font-black tracking-tighter leading-[0.85] text-white italic uppercase mix-blend-difference w-full max-w-4xl">
 
               Abhishek<br />Singh
             </motion.h1>
@@ -230,20 +242,20 @@ export default function ResumePage() {
               <h3 className="text-5xl md:text-7xl font-heading font-black text-white italic uppercase tracking-tighter !whitespace-pre-line">SELECTED WORK</h3>
             </div>
           </div>
-          
-            <div className="grid grid-cols-1 gap-12">
-              <FeaturedProject
+
+          <div className="grid grid-cols-1 gap-12">
+            <FeaturedProject
               index=""
               title="IND Manager"
               description="A robust industrial management suite optimizing order workflows, real-time inventory synchronization, and secure enterprise payment gateways."
               tags={["React", "Node.js", "SQL", "Stripe", "Logistics"]}
               images={[
-              "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/e6498e14-b48b-42f2-807a-daaa23431273/Screenshot-2026-01-11-142850-1768121968235.png",
-              "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/e6498e14-b48b-42f2-807a-daaa23431273/Screenshot-2026-01-11-142746-1768121968045.png",
-              "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/e6498e14-b48b-42f2-807a-daaa23431273/Screenshot-2026-01-11-142830-1768121968236.png"]
+                "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/e6498e14-b48b-42f2-807a-daaa23431273/Screenshot-2026-01-11-142850-1768121968235.png",
+                "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/e6498e14-b48b-42f2-807a-daaa23431273/Screenshot-2026-01-11-142746-1768121968045.png",
+                "https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/project-uploads/e6498e14-b48b-42f2-807a-daaa23431273/Screenshot-2026-01-11-142830-1768121968236.png"]
               }
               link="https://ind-manager-s.vercel.app/dashboard" />
-            </div>
+          </div>
         </section>
 
         {/* Journey & Data */}
@@ -251,15 +263,15 @@ export default function ResumePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-32">
             {/* Timeline */}
             <div>
-              <label className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-600 mb-12 block animate-text-flicker !whitespace-pre-line">/ ACADEMIC 
+              <label className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-600 mb-12 block animate-text-flicker !whitespace-pre-line">/ ACADEMIC
 
               </label>
               <div className="space-y-16">
                 <TimelineItem
-                  year="2022 \\ 2025"
+                  year="2022 / 2025"
                   title="Bachelor's in Computer Application"
                   institution="Amity University, Panvel"
-                  details="Focused on Software Engineering and AI concepts. Graduated with 6.80 CGPA."
+                  details="Focused on Software Engineering and AI concepts. Graduated with 7.02 CGPA."
                   active />
 
                 <TimelineItem
@@ -288,12 +300,12 @@ export default function ResumePage() {
               <div className="absolute -inset-1 bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative glass-card border-white/10 rounded-[3rem] p-12 specular-highlight !w-full !h-full">
                 <h3 className="text-4xl font-heading font-black text-white italic mb-12 uppercase tracking-tighter">Identity & Reach</h3>
-                
+
                 <div className="space-y-8 mb-12">
                   <ContactRow label="Email Protocol" value="inabbys.17@gmail.com" />
                   <ContactRow label="Mobile Uplink" value="+91 9175188539" />
                   <ContactRow label="Geographic Hub" value="Mumbai , Vasai" />
-                  <ContactRow label="AGE" value="21" />
+                  <ContactRow label="AGE" value="22" />
                   <ContactRow label="Communication" value="English / Hindi" />
                 </div>
 
@@ -313,8 +325,8 @@ export default function ResumePage() {
               <p className="text-zinc-600 font-mono text-[10px] uppercase tracking-[0.4em] animate-text-flicker">Next-Gen Interface & Code Architect</p>
             </div>
             <div className="flex gap-10 text-[11px] font-mono uppercase tracking-widest text-zinc-500">
-              <a 
-                href="https://www.linkedin.com/in/abhishek-singh-809910260" 
+              <a
+                href="https://www.linkedin.com/in/abhishek-singh-809910260"
                 className="hover:text-white transition-colors"
                 onClick={(e) => {
                   e.preventDefault();
@@ -323,8 +335,8 @@ export default function ResumePage() {
               >
                 LinkedIn
               </a>
-              <a 
-                href="https://github.com/Holaabhie" 
+              <a
+                href="https://github.com/Holaabhie"
                 className="hover:text-white transition-colors"
                 onClick={(e) => {
                   e.preventDefault();
@@ -348,7 +360,7 @@ export default function ResumePage() {
 
 }
 
-function NavLink({ href, children }: {href: string;children: React.ReactNode;}) {
+function NavLink({ href, children }: { href: string; children: React.ReactNode; }) {
   return (
     <a href={href} className="hover:text-white transition-all hover:tracking-[0.2em] relative group">
       {children}
@@ -357,7 +369,7 @@ function NavLink({ href, children }: {href: string;children: React.ReactNode;}) 
 
 }
 
-function MagnetButton({ children }: {children: React.ReactNode;}) {
+function MagnetButton({ children }: { children: React.ReactNode; }) {
   const ref = React.useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -393,7 +405,7 @@ function MagnetButton({ children }: {children: React.ReactNode;}) {
 
 }
 
-function MatrixCell({ icon, label, skills }: {icon: React.ReactNode;label: string;skills: string[];}) {
+function MatrixCell({ icon, label, skills }: { icon: React.ReactNode; label: string; skills: string[]; }) {
   return (
     <motion.div
       whileHover={{ backgroundColor: "rgba(255,255,255,0.04)" }}
@@ -407,7 +419,7 @@ function MatrixCell({ icon, label, skills }: {icon: React.ReactNode;label: strin
         <h4 className="text-sm font-mono uppercase tracking-[0.2em] text-zinc-600 mb-6 group-hover:text-zinc-400 transition-colors">{label}</h4>
         <div className="flex flex-wrap gap-2">
           {skills.map((skill) =>
-          <Badge key={skill} variant="outline" className="border-white/5 bg-transparent text-zinc-500 text-[10px] group-hover:border-white/20 group-hover:text-zinc-200 uppercase tracking-widest py-0.5 px-2">
+            <Badge key={skill} variant="outline" className="border-white/5 bg-transparent text-zinc-500 text-[10px] group-hover:border-white/20 group-hover:text-zinc-200 uppercase tracking-widest py-0.5 px-2">
               {skill}
             </Badge>
           )}
@@ -417,7 +429,7 @@ function MatrixCell({ icon, label, skills }: {icon: React.ReactNode;label: strin
 
 }
 
-function FeaturedProject({ index, title, description, tags, images, link }: {index: string;title: string;description: string;tags: string[];images: string[];link?: string;}) {
+function FeaturedProject({ index, title, description, tags, images, link }: { index: string; title: string; description: string; tags: string[]; images: string[]; link?: string; }) {
   const [currentIndex, setCurrentIndex] = React.useState(0);
 
   React.useEffect(() => {
@@ -449,38 +461,38 @@ function FeaturedProject({ index, title, description, tags, images, link }: {ind
 
         <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent opacity-60" />
         <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-        
+
         {/* Progress Indicators */}
         <div className="absolute bottom-8 left-8 flex gap-2 z-10">
           {images.map((_, i) =>
-          <div
-            key={i}
-            className={cn(
-              "h-1 rounded-full transition-all duration-500",
-              i === currentIndex ? "w-8 bg-white" : "w-2 bg-white/20"
-            )} />
+            <div
+              key={i}
+              className={cn(
+                "h-1 rounded-full transition-all duration-500",
+                i === currentIndex ? "w-8 bg-white" : "w-2 bg-white/20"
+              )} />
 
           )}
         </div>
       </div>
-      
+
       <div className="lg:col-span-5 flex flex-col gap-6">
         <div className="flex items-center gap-4">
           <span className="text-4xl font-heading font-black italic text-zinc-800 tracking-tighter group-hover:text-blue-500/40 transition-colors !whitespace-pre-line">{index}</span>
           <div className="h-[1px] w-12 bg-white/10" />
           <div className="flex gap-2">
             {tags.slice(0, 2).map((tag) =>
-            <span key={tag} className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">#{tag}</span>
+              <span key={tag} className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">#{tag}</span>
             )}
           </div>
         </div>
-        
+
         <h4 className="text-4xl font-heading font-black text-white italic uppercase tracking-tighter group-hover:translate-x-2 transition-transform duration-500">{title}</h4>
         <h5 className="text-zinc-400 text-lg leading-relaxed">{description}</h5>
-        
+
         <div className="flex flex-wrap gap-2 mb-4">
           {tags.map((tag) =>
-          <Badge key={tag} variant="outline" className="border-white/10 bg-white/5 text-zinc-500 text-[9px] uppercase tracking-widest">
+            <Badge key={tag} variant="outline" className="border-white/10 bg-white/5 text-zinc-500 text-[9px] uppercase tracking-widest">
               {tag}
             </Badge>
           )}
@@ -504,7 +516,7 @@ function FeaturedProject({ index, title, description, tags, images, link }: {ind
 
 }
 
-function TimelineItem({ year, title, institution, details, active }: {year: string;title: string;institution: string;details: string;active?: boolean;}) {
+function TimelineItem({ year, title, institution, details, active }: { year: string; title: string; institution: string; details: string; active?: boolean; }) {
   return (
     <div className="relative pl-12 group">
       <div className="absolute left-0 top-1 w-[1px] h-full bg-white/5" />
@@ -513,9 +525,9 @@ function TimelineItem({ year, title, institution, details, active }: {year: stri
         active ? "bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)]" : "bg-white/10 group-hover:bg-white/30"
       )} />
       {active &&
-      <div className="absolute left-[-12px] top-[-7px] w-6 h-6 rounded-full border border-blue-500/20 animate-ping opacity-20" />
+        <div className="absolute left-[-12px] top-[-7px] w-6 h-6 rounded-full border border-blue-500/20 animate-ping opacity-20" />
       }
-      
+
       <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mb-4 block animate-text-flicker !whitespace-pre-line !whitespace-pre-line">{year}</span>
       <h4 className="text-2xl font-bold text-white italic mb-2 tracking-tight group-hover:text-blue-400 transition-colors">{title}</h4>
       <p className="text-zinc-400 font-medium mb-4">{institution}</p>
@@ -524,7 +536,7 @@ function TimelineItem({ year, title, institution, details, active }: {year: stri
 
 }
 
-function Highlight({ icon, text }: {icon: React.ReactNode;text: string;}) {
+function Highlight({ icon, text }: { icon: React.ReactNode; text: string; }) {
   return (
     <div className="flex items-center gap-4 group">
       <div className="w-8 h-8 rounded-full border border-white/5 flex items-center justify-center text-zinc-600 group-hover:text-white group-hover:border-white/20 transition-all">
@@ -535,7 +547,7 @@ function Highlight({ icon, text }: {icon: React.ReactNode;text: string;}) {
 
 }
 
-function ContactRow({ label, value }: {label: string;value: string;}) {
+function ContactRow({ label, value }: { label: string; value: string; }) {
   return (
     <div className="flex flex-col gap-1 group cursor-default">
       <span className="text-[9px] font-mono uppercase tracking-[0.4em] text-zinc-700 animate-text-flicker !whitespace-pre-line">{label}</span>
@@ -544,7 +556,7 @@ function ContactRow({ label, value }: {label: string;value: string;}) {
 
 }
 
-function SocialButton({ icon, href }: {icon: React.ReactNode;href: string;}) {
+function SocialButton({ icon, href }: { icon: React.ReactNode; href: string; }) {
   return (
     <MagnetButton>
       <Button
@@ -580,7 +592,7 @@ function AcademicWork() {
           <Signature />
         </div>
       </div>
-      
+
       <div className="lg:col-span-5 flex flex-col gap-6">
         <div className="flex items-center gap-4">
           <span className="text-4xl font-heading font-black italic text-zinc-800 tracking-tighter group-hover:text-purple-500/40 transition-colors">02</span>
@@ -590,13 +602,13 @@ function AcademicWork() {
             <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">#Research</span>
           </div>
         </div>
-        
+
         <h4 className="text-4xl font-heading font-black text-white italic uppercase tracking-tighter group-hover:translate-x-2 transition-transform duration-500">CryptoTransfer & Verification</h4>
         <h5 className="text-zinc-400 text-lg leading-relaxed">Experimental research into peer-to-peer asset transfer protocols and cryptographic identity verification systems. Focus on high-security signature validation and decentralized node architecture.</h5>
-        
+
         <div className="flex flex-wrap gap-2 mb-4">
           {["Cryptography", "Security", "P2P", "Protocols", "Hashing"].map((tag) =>
-          <Badge key={tag} variant="outline" className="border-white/10 bg-white/5 text-zinc-500 text-[9px] uppercase tracking-widest">
+            <Badge key={tag} variant="outline" className="border-white/10 bg-white/5 text-zinc-500 text-[9px] uppercase tracking-widest">
               {tag}
             </Badge>
           )}
