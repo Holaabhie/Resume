@@ -1,0 +1,30 @@
+node:internal/modules/cjs/loader:1408
+  throw err;
+  ^
+
+Error: Cannot find module '@swc/helpers/_/_interop_require_default'
+Require stack:
+- C:\Users\HP\OneDrive\Desktop\Resume\node_modules\next\dist\shared\lib\constants.js
+- C:\Users\HP\OneDrive\Desktop\Resume\node_modules\next\dist\server\config.js
+- C:\Users\HP\OneDrive\Desktop\Resume\node_modules\next\dist\cli\next-test.js
+- C:\Users\HP\OneDrive\Desktop\Resume\node_modules\next\dist\bin\next
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1405:15)
+    at C:\Users\HP\OneDrive\Desktop\Resume\node_modules\next\dist\server\require-hook.js:55:36
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)
+    at Function._load (node:internal/modules/cjs/loader:1215:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1491:12)
+    at mod.require (C:\Users\HP\OneDrive\Desktop\Resume\node_modules\next\dist\server\require-hook.js:65:28)
+    at require (node:internal/modules/helpers:135:16) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'C:\\Users\\HP\\OneDrive\\Desktop\\Resume\\node_modules\\next\\dist\\shared\\lib\\constants.js',
+    'C:\\Users\\HP\\OneDrive\\Desktop\\Resume\\node_modules\\next\\dist\\server\\config.js',
+    'C:\\Users\\HP\\OneDrive\\Desktop\\Resume\\node_modules\\next\\dist\\cli\\next-test.js',
+    'C:\\Users\\HP\\OneDrive\\Desktop\\Resume\\node_modules\\next\\dist\\bin\\next'
+  ]
+}
+
+Node.js v23.11.0

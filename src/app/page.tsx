@@ -132,7 +132,7 @@ export default function ResumePage() {
 
             <motion.h1
               variants={fadeInUp}
-              className="text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-heading font-black tracking-tighter leading-[0.85] text-white italic uppercase mix-blend-difference w-full max-w-4xl">
+              className="text-[clamp(3rem,14vw,10rem)] overflow-hidden break-words font-heading font-black tracking-tighter leading-[0.85] text-white italic uppercase mix-blend-difference w-full max-w-4xl">
 
               Abhishek<br />Singh
             </motion.h1>
