@@ -7,6 +7,9 @@ import Script from "next/script";
 export const metadata: Metadata = {
   title: "Abhishek Singh — Software Developer & Visual Architect",
   description: "Portfolio of Abhishek Singh — Software Developer focused on engineering the future through lean code and immersive digital experiences.",
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({
